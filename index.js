@@ -26,10 +26,15 @@ app.use(
 );
 app.use(morgan("common"));
 app.use(cookieParser());
+let origin = "http://localhost:3000/";
+console.log("server env", process.env.NODE_ENV);
+if (process.env.NODE_ENV === "production") {
+origin = process.env.CORS_URL;
+}
 app.use(
   cors({
     credentials: true,
-    origin: "https://social-media-client-4sgi.onrender.com",
+    origin,
     optionsSuccessStatus: 200,
   })
 );
