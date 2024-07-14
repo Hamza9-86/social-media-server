@@ -49,7 +49,7 @@ const likeAndUnlikePost = async (req, res) => {
       post.likes.splice(index, 1);
     } else {
       post.likes.push(currUserId);
-    }
+    } 
     await post.save();
     return res.send(success(200 , {post : mapPostOutput(post , req._id)}));
   } catch (e) {

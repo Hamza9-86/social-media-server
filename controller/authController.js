@@ -44,7 +44,7 @@ const loginController = async (req, res) => {
       return res.send(error(400, "All fields are required"));
     }
 
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email }).select("+password");//sends password also in the user object
     if (!user) {
       return res.send(error(409, "User not registered"));
     }
@@ -64,7 +64,7 @@ const loginController = async (req, res) => {
     });
 
     res.cookie("jwt", refreshToken, {
-      httpOnly: true,
+      httpOnly: true,//cookie me bhejte refresh token and direct response me access token
       secure: true,
     });
 
@@ -77,15 +77,15 @@ const loginController = async (req, res) => {
 //this api will check refreshToken validity and generate new access token
 const refreshAccessTokenController = async (req, res) => {
   // const {refreshToken} = req.body;
-  const cookies = req.cookies;
-  if (!cookies.jwt) {
+  const cookies = req.cookies;//cookie parser chahiye hoga iske liye
+  if (!cookies.jwt) {//refresh token ka naam jwt
     console.log(req.cookies);
     return res.send(error(401, "Refresh token in cookie is required"));
   }
   const refreshToken = cookies.jwt;
 
   try {
-    const decoded = jwt.verify(
+    const decoded = jwt.verify(//verify krna refresh token ko
       refreshToken,
       process.env.REFRESH_TOKEN_PRIVATE_KEY
     );
